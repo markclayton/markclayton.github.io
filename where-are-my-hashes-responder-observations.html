@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Where are my hashes? (Responder Observations)</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="http://localhost:8000" rel="canonical" />
+  <!-- <link rel="shortcut icon" href="static/images/favicon.ico" /> -->
+
+  <!-- Feed -->
+      <link href="https://markclayton.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="_bullz3ye Full Atom Feed" />
+
+  <link href="http://localhost:8000/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="http://localhost:8000/theme/css/code_blocks/github.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="http://localhost:8000/where-are-my-hashes-responder-observations.html" rel="canonical" />
+
+        <meta name="description" content="TL;DR On a recent engagement, it was noticed that Responder and Metasploit's LLMNR and NBT-NS spoofing modules weren't capturing the...">
+
+        <meta name="author" content="Mark Clayton">
+
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="_bullz3ye" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="_bullz3ye" />
+    <meta property="og:description" content="...still thinking of a genius subtitle, but I break things." />
+    <meta property="og:url" content="http://localhost:8000" />
+      <meta name="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="http://localhost:8000/author/mark-clayton.html">
+  <meta property="og:url" content="http://localhost:8000/where-are-my-hashes-responder-observations.html">
+  <meta property="og:title" content="Where are my hashes? (Responder Observations)">
+  <meta property="article:published_time" content="2017-03-11 14:52:00-06:00">
+            <meta property="og:description" content="TL;DR On a recent engagement, it was noticed that Responder and Metasploit's LLMNR and NBT-NS spoofing modules weren't capturing the...">
+
+            <meta property="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@_bullz3ye">
+        <meta name="twitter:title" content="Where are my hashes? (Responder Observations)">
+        <meta name="twitter:url" content="http://localhost:8000/where-are-my-hashes-responder-observations.html">
+
+            <meta name="twitter:image:src" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="TL;DR On a recent engagement, it was noticed that Responder and Metasploit's LLMNR and NBT-NS spoofing modules weren't capturing the...">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/" role="presentation">Home</a></li>
+          <li><a href="https://twitter.com/_bullz3ye" role="presentation">Twitter</a></li>
+          <li><a href="mailto:markclayton93@gmail.com" role="presentation">Email</a></li>
+
+
+        <li class="nav-rss"><a href="https://markclayton.github.io/feeds/all.atom.xml"><i class="ic ic-rss"></i> Subscribe</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span class="blog-logo">
+                <a href="http://localhost:8000"><img src="images/site-logo.png" alt="Blog Logo" /></a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Where are my hashes? (Responder Observations)</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="http://localhost:8000/author/mark-clayton.html">Mark clayton</a>
+            | <time datetime="Sat 11 March 2017">Sat 11 March 2017</time>
+        </span>
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-color: black">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <h1>TL;DR</h1>
+<p>On a recent engagement, it was noticed that Responder and Metasploit's LLMNR and  NBT-NS spoofing modules weren't capturing the hashes like initially expected. Doing some investigation into some of the capabilities of Responder, some observations can be made. A name conflict may arise when poisoning LLMNR or NBT-NS requests for known names, not allowing for NTLM authentication to be initiated when requesting an SMB share. Secondly, Internet Explorer 11 has blocked proxy configuration scripts (i.e. WPAD) that require authentication, preventing these tools from initiating Basic authentication. Be sure to look out for this behavior in the field and adjust accordingly. Happy hacking!</p>
+<h3>Disclaimer??</h3>
+<p>This research is not considered to be absolute and complete, these are just observations made that I figured to be worth of a blog post. As I'm always learning and could be way off point, please correct/advise :) I'm far from an expert in the subject matter. Let us get started.</p>
+<p>On a recent internal penetration test, I found myself in a position where capturing Windows credentials seemed to be one of the remaining options of gaining a foothold on the domain. It came down to tools like Responder and Metasploit's LLMNR and NBT-NS poisoning modules. Over the past couple of years, there has some good research on this topic. Collectively, this attack method is known to be very reliable in the security community (at least I think so). Given the amount of information on the internet regarding how these tools and LLMNR/NBT-NS poisoning works, I won't be reiterating the information in this post. Please see references for more information. </p>
+<p>During the engagement I spin up Responder, force WPAD authentication, and sit back while the credentials roll in. </p>
+<p><img alt="a funny relevant spongebob meme" src="https://cdn.meme.am/cache/instances/folder718/64548718.jpg"></p>
+<p>Thirty minutes go by with no credentials. A few hours go by ... no credentials. </p>
+<p><img alt="why you no work" src="https://www.mememaker.net/static/images/memes/4500896.jpg"></p>
+<p>What could be the problem? Where are the hashes?! Surely, Responder is poisoning the LLMNR and NBT-NS requests effectively.  I try different command line switch configurations, all to no avail. Of course the big question is why. There has to be a explanation for Responder running for hours and never capturing a password. It's off to the lab to do some investigation on Responder. </p>
+<p>Our primary question: Although Responder is poisoning LLMNR and NBT-NS requests, why aren't we seeing credentials? Two very commonly discussed ways Responder capture hashes is by requesting an SMB share, or when IE requests for WPAD. We will be investigating these two functions in this post. </p>
+<ul>
+<li>Attacker Machine (Kali): 10.10.10.101</li>
+<li>Victim (Windows 2012 Server): 10.10.10.102</li>
+</ul>
+<p>FYI these two hosts are in a Active Directory lab with Victim.</p>
+<p>Spinning up Responder and start seeing some activity.</p>
+<p><code>root@kali# ./Responder.py -I eth0 -wFf</code></p>
+<p><img alt="standard_responder_output" src="/images/smb_negotiate_protocol.png"></p>
+<p>After 10 minutes, still aren't seeing any hashes. Responder is poisoning the LLMNR and NBNS requests generated by the victim, but it isn't until I requests an SMB share with a random name (as described in several tutorials) that we get a hash. Credentials are captured on a query for a name that doesn't currently exists on the network, it must be unique (i.e. \fielshare). As long as the name the victim is querying for exists on the domain, the poisoning tools do not get the opportunity to initiate a NTLM challenge.</p>
+<p>In an engagement, it looks like capturing a hash depends on this condition being "triggered", as Windows is unlikely to request \\fielshare on its own. Analysis shows that the NetBIOS requests generated without "outside assistance" are only for known names, which Responder will not capture hashes despite poisoning responses. This may explain why I didn't much results during the assessment. Perhaps no arbitrary name queries took place on the network. Exactly what prevents Responder from sending a NTLM challenge for an existing name when requesting an SMB share? </p>
+<p>We examine a message exchange that occurs when our victim queries a valid name, in this case the domain PWNLAB. (Side note, these requests were generated by typing "\\" in the victim's Windows Explorer.)</p>
+<p><img alt="name is in conflict" src="/images/full_wireshark_conflict.png"></p>
+<p>Here we can see the NBNS broadcast name query for PWNLAB (packet 648). Packet 650 shows Responder poising the request. Finally in packets number 651 (highlighted), we see this "Name is on conflict" message sent from the victim. Let's take a closer look at this packet.</p>
+<p><img alt="examination of response" src="/images/conflict_detailed.png"></p>
+<p>Looking at the highlighted row, this shows that the field values are set to indicate a conflict. This name conflict causes the victim to not communicate with the attacker as expected.</p>
+<p>RFC 1002 for NBNS gives some information regarding name conflicts. Check out the RFC itself for more information. </p>
+<p><a href="https://tools.ietf.org/html/rfc1002">https://tools.ietf.org/html/rfc1002</a></p>
+<p><img alt="nbns response field values" src="/images/nbns_response.png"></p>
+<p>RFC 4795 for LLMNR states, </p>
+<p><a href="https://tools.ietf.org/html/rfc4795">https://tools.ietf.org/html/rfc4795</a></p>
+<blockquote>
+<p>Queries with the 'C' bit set are considered advisory, and responders MUST verify the existence of a conflict before acting on it. A responder receiving a query with the 'C' bit set MUST NOT respond. </p>
+</blockquote>
+<p>RFC 1001</p>
+<p><a href="https://tools.ietf.org/html/rfc1001">https://tools.ietf.org/html/rfc1001</a></p>
+<blockquote>
+<p>Protocol operations sensitive to successive response packets, such as
+name conflict detection, are protected from duplicated packets
+because they ignore successive packets with the same NetBIOS
+information.  Since no state on the responder's node is associated
+with a request, the responder just sends the appropriate response
+whenever a request packet arrives.  Consequently, duplicate or
+delayed request packets have no impact.</p>
+</blockquote>
+<p>The victim ignores successive packets from nodes where conflict detection arises. One can conclude that the successful packets to set up a TCP and SMB connection do not occur between the attacker and victim as oppose to when a unique (arbitrary) name is requested. Looking back at the previous Wireshark image following message exchange being repeated.</p>
+<ol>
+<li>Victim name query request</li>
+<li>Attacker poisoned name query response</li>
+<li>Victim name conflict detection </li>
+</ol>
+<p>Now let's see what happens when the victim requests an arbitrary name (i.e. ramdom), triggered by requested the share \\ramdom. (Side note: haste typing caused "random" to be "ramdom".)</p>
+<p><img alt="proper_hash_capture" src="/images/smb_negotiate_protocol.png"></p>
+<p>In the above image 3 observations can be made.</p>
+<ol>
+<li>Packet# 914 - 922: Name query for ramdom followed by poisoned response</li>
+<li>Packet# 923 - 927: Creation of a TCP connection, and following SMB connection attempt</li>
+<li>Packet# 928 - 931: NTLM challenge transactions resulting in the attacker capturing hashes</li>
+</ol>
+<p><img alt="hash_captured" src="/images/grabbed_hash.png"></p>
+<p>This is why a trigger is needed, which in a real engagement you can't truly sit back and wait for the credentials to roll in. An attacker must rely on an instance where a unique name is requested, either via simple user error or perhaps forcing a victim to send a name requests for a unique name. These tools are still outstanding, but this explains the instances where no hashes are captured.</p>
+<p>Unless the basic authentication switch (-b) is used, the same trigger applies for Responder's HTTP/HTTPS/FTP module. A successful attack happens upon an arbitrary name (i.e. http://unknowndomain123/).</p>
+<h3>Force WPAD Authentication</h3>
+<p>This leads to another reliable methods Responder uses to grab hashes ... forcing WPAD authentication. This topic has received a lot of discussion and is pretty popular. Once again, multiple articles explain this so I'll will leave it to them (they can explain it better I'm sure). Testing still proves this to be extremely reliable on IE prior to version 11, as you can truly sit back and wait for a victim to open IE. What about IE11 and beyond? On a Windows Server 2012 R2 or Windows 10 environment? During the engagement this wasn't working either, no hashes were captured. Once again we ask the question why.</p>
+<p>We have the same lab setup mentioned above. By default, "Automatically detect settings" is enabled in IE's LAN Settings, and will send requests for WPAD quite frequently. Let's look at the traffic:</p>
+<p><img alt="wpad_true_poisoning" src="/images/true_poisoning.png"></p>
+<p>We can see that Responder is poisoning the LLMNR requests, which is soon followed up with our victim requested wpad.dat from our rogue WPAD server. Looking at the TCP stream we can see the following message exchange. </p>
+<p><img alt="basic auth challenge" src="images/basic_auth_challenge.png"></p>
+<p>Responder is attempting to get the victim to authenticate, however no Basic Authentication prompt appears. What's stopping this? After doing a little digging we see the following.</p>
+<p><a href="https://blogs.msdn.microsoft.com/ieinternals/2013/10/11/understanding-web-proxy-configuration/">https://blogs.msdn.microsoft.com/ieinternals/2013/10/11/understanding-web-proxy-configuration/</a></p>
+<blockquote>
+<p>NOTE: IE11 Deprecates Non-Silent Auth when downloading Proxy Script</p>
+<p>When downloading a proxy configuration script, it’s possible that the server will demand credentials from the client application. A problem arises if the server requests credentials using HTTP BASIC or HTTP DIGEST authentication, as these authentication methods require that the user respond to a credential prompt dialog box. (In contrast, NTLM and Negotiate authenticate silently).</p>
+<p>Many applications cannot handle showing prompts as a part of this workflow and will fail silently. To promote interoperability, IE11 also blocks the use of Proxy Configuration scripts that require authentication.</p>
+</blockquote>
+<p>Responder is attempting to force NTLM or Basic Authentication, but IE11 in its default state now blocks proxy configurations that require authentication. </p>
+<p>In conclusion, if you aren't seeing any hashes after running Responder for awhile time you may want to give it a trigger. Perhaps by supplying a link, or using a man-in-the-middle proxy. This post isn't to diminish Responder or LLMNT/NBNT-NS poisoning tools in any way. These are still very reliable, amazing tools, and the effort in developing them is truly appreciated. Instead, it is to simply highlight some of the reasons why one may not seeing your hashes when testing an environment with more up-to-date hosts. All to make one more aware during engagements. </p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Where are my hashes? (Responder Observations)&amp;url=http://localhost:8000/where-are-my-hashes-responder-observations.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/where-are-my-hashes-responder-observations.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=http://localhost:8000/where-are-my-hashes-responder-observations.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="http://localhost:8000/theme/js/script.js"></script>
+  
+</body>
+</html>

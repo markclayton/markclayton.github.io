@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>SickOS Vulnhub Walkthrough</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="http://localhost:8000" rel="canonical" />
+  <!-- <link rel="shortcut icon" href="static/images/favicon.ico" /> -->
+
+  <!-- Feed -->
+      <link href="https://markclayton.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="_bullz3ye Full Atom Feed" />
+
+  <link href="http://localhost:8000/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="http://localhost:8000/theme/css/code_blocks/github.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="http://localhost:8000/sickos-vulnhub-walkthrough.html" rel="canonical" />
+
+        <meta name="description" content="I know it's been entirely too long since my last post. Work, study, and family will definitely take up time. I had a break so I figured...">
+
+        <meta name="author" content="Mark Clayton">
+
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="_bullz3ye" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="_bullz3ye" />
+    <meta property="og:description" content="...still thinking of a genius subtitle, but I break things." />
+    <meta property="og:url" content="http://localhost:8000" />
+      <meta name="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="http://localhost:8000/author/mark-clayton.html">
+  <meta property="og:url" content="http://localhost:8000/sickos-vulnhub-walkthrough.html">
+  <meta property="og:title" content="SickOS Vulnhub Walkthrough">
+  <meta property="article:published_time" content="2016-08-12 08:23:00-05:00">
+            <meta property="og:description" content="I know it's been entirely too long since my last post. Work, study, and family will definitely take up time. I had a break so I figured...">
+
+            <meta property="og:image" content="http://localhost:8000/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@_bullz3ye">
+        <meta name="twitter:title" content="SickOS Vulnhub Walkthrough">
+        <meta name="twitter:url" content="http://localhost:8000/sickos-vulnhub-walkthrough.html">
+
+            <meta name="twitter:image:src" content="http://localhost:8000/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="I know it's been entirely too long since my last post. Work, study, and family will definitely take up time. I had a break so I figured...">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/" role="presentation">Home</a></li>
+          <li><a href="https://twitter.com/_bullz3ye" role="presentation">Twitter</a></li>
+          <li><a href="mailto:markclayton93@gmail.com" role="presentation">Email</a></li>
+
+
+        <li class="nav-rss"><a href="https://markclayton.github.io/feeds/all.atom.xml"><i class="ic ic-rss"></i> Subscribe</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span class="blog-logo">
+                <a href="http://localhost:8000"><img src="images/site-logo.png" alt="Blog Logo" /></a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">SickOS Vulnhub Walkthrough</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="http://localhost:8000/author/mark-clayton.html">Mark clayton</a>
+            | <time datetime="Fri 12 August 2016">Fri 12 August 2016</time>
+        </span>
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-color: black">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>I know it's been entirely too long since my last post. Work, study, and family will definitely take up time. I had a break so I figured I'd do a little practice on <a href="https://www.vulnhub.com/">VulnHub</a>. I've been meaning to do the SickOS 1.1 VM so I'm glad I finally got around to it. Vulnhub has bene doing some absolutely amazing work, pushing out tons of VM's of varying content and difficulty. Shoutout to <a href="https://twitter.com/g0tmi1k">@g0tmi1k</a> and the team for the amazing effort.
+Lets get started. </p>
+<p>Of course, lets identify which IP our VM has been given. </p>
+<div class="highlight"><pre><span></span>root@kali:~/Desktop/sickos# netdiscover -r <span class="m">192</span>.168.61.0/24
+ Currently scanning: Finished!   <span class="p">|</span>   Screen View: Unique Hosts                                          
+
+ <span class="m">4</span> Captured ARP Req/Rep packets, from <span class="m">4</span> hosts.   Total size: <span class="m">240</span>                                        
+ _____________________________________________________________________________
+   IP            At MAC Address     Count     Len  MAC Vendor / Hostname      
+ -----------------------------------------------------------------------------
+ <span class="m">192</span>.168.61.1    <span class="m">00</span>:50:56:c0:00:08      <span class="m">1</span>      <span class="m">60</span>  VMware, Inc.                                         
+ <span class="m">192</span>.168.61.2    <span class="m">00</span>:50:56:f1:59:2e      <span class="m">1</span>      <span class="m">60</span>  VMware, Inc.                                         
+ <span class="m">192</span>.168.61.177  <span class="m">00</span>:0c:29:eb:3c:73      <span class="m">1</span>      <span class="m">60</span>  VMware, Inc.                                         
+ <span class="m">192</span>.168.61.254  <span class="m">00</span>:50:56:f9:f6:6c      <span class="m">1</span>      <span class="m">60</span>  VMware, Inc.                                         
+
+root@kali:~/Desktop/sickos# 
+</pre></div>
+
+
+<p>Next step...nmap. </p>
+<div class="highlight"><pre><span></span>root@kali:~/Desktop/sickos# nmap -v -T5 -A <span class="m">192</span>.168.61.177
+Starting Nmap <span class="m">7</span>.12 <span class="o">(</span> https://nmap.org <span class="o">)</span> at <span class="m">2016</span>-08-12 <span class="m">11</span>:29 CDT
+NSE: Loaded <span class="m">138</span> scripts <span class="k">for</span> scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.00s elapsed
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.00s elapsed
+Initiating ARP Ping Scan at <span class="m">11</span>:29
+Scanning <span class="m">192</span>.168.61.177 <span class="o">[</span><span class="m">1</span> port<span class="o">]</span>
+Completed ARP Ping Scan at <span class="m">11</span>:29, <span class="m">0</span>.02s elapsed <span class="o">(</span><span class="m">1</span> total hosts<span class="o">)</span>
+Initiating Parallel DNS resolution of <span class="m">1</span> host. at <span class="m">11</span>:29
+Completed Parallel DNS resolution of <span class="m">1</span> host. at <span class="m">11</span>:29, <span class="m">4</span>.05s elapsed
+Initiating SYN Stealth Scan at <span class="m">11</span>:29
+Scanning <span class="m">192</span>.168.61.177 <span class="o">[</span><span class="m">1000</span> ports<span class="o">]</span>
+Discovered open port <span class="m">22</span>/tcp on <span class="m">192</span>.168.61.177
+Discovered open port <span class="m">3128</span>/tcp on <span class="m">192</span>.168.61.177
+Completed SYN Stealth Scan at <span class="m">11</span>:29, <span class="m">3</span>.31s elapsed <span class="o">(</span><span class="m">1000</span> total ports<span class="o">)</span>
+Initiating Service scan at <span class="m">11</span>:29
+Scanning <span class="m">2</span> services on <span class="m">192</span>.168.61.177
+Completed Service scan at <span class="m">11</span>:29, <span class="m">11</span>.03s elapsed <span class="o">(</span><span class="m">2</span> services on <span class="m">1</span> host<span class="o">)</span>
+Initiating OS detection <span class="o">(</span>try <span class="c1">#1) against 192.168.61.177</span>
+NSE: Script scanning <span class="m">192</span>.168.61.177.
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.74s elapsed
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.00s elapsed
+Nmap scan report <span class="k">for</span> <span class="m">192</span>.168.61.177
+Host is up <span class="o">(</span><span class="m">0</span>.00051s latency<span class="o">)</span>.
+Not shown: <span class="m">997</span> filtered ports
+PORT     STATE  SERVICE    VERSION
+<span class="m">22</span>/tcp   open   ssh        OpenSSH <span class="m">5</span>.9p1 Debian 5ubuntu1.1 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol <span class="m">2</span>.0<span class="o">)</span>
+<span class="p">|</span> ssh-hostkey: 
+<span class="p">|</span>   <span class="m">1024</span> <span class="m">09</span>:3d:29:a0:da:48:14:c1:65:14:1e:6a:6c:37:04:09 <span class="o">(</span>DSA<span class="o">)</span>
+<span class="p">|</span>   <span class="m">2048</span> <span class="m">84</span>:63:e9:a8:8e:99:33:48:db:f6:d5:81:ab:f2:08:ec <span class="o">(</span>RSA<span class="o">)</span>
+<span class="p">|</span>_  <span class="m">256</span> <span class="m">51</span>:f6:eb:09:f6:b3:e6:91:ae:36:37:0c:c8:ee:34:27 <span class="o">(</span>ECDSA<span class="o">)</span>
+<span class="m">3128</span>/tcp open   http-proxy Squid http proxy <span class="m">3</span>.1.19
+<span class="p">|</span> http-open-proxy: Potentially OPEN proxy.
+<span class="p">|</span>_Methods supported: GET HEAD
+<span class="p">|</span>_http-server-header: squid/3.1.19
+<span class="p">|</span>_http-title: ERROR: The requested URL could not be retrieved
+<span class="m">8080</span>/tcp closed http-proxy
+MAC Address: <span class="m">00</span>:0C:29:EB:3C:73 <span class="o">(</span>VMware<span class="o">)</span>
+Device type: general purpose
+Running: Linux <span class="m">3</span>.X<span class="p">|</span><span class="m">4</span>.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux <span class="m">3</span>.2 - <span class="m">4</span>.4
+Uptime guess: <span class="m">199</span>.638 days <span class="o">(</span>since Mon Jan <span class="m">25</span> <span class="m">19</span>:11:43 <span class="m">2016</span><span class="o">)</span>
+Network Distance: <span class="m">1</span> hop
+TCP Sequence Prediction: <span class="nv">Difficulty</span><span class="o">=</span><span class="m">261</span> <span class="o">(</span>Good luck!<span class="o">)</span>
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+<span class="m">1</span>   <span class="m">0</span>.51 ms <span class="m">192</span>.168.61.177
+
+NSE: Script Post-scanning.
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.00s elapsed
+Initiating NSE at <span class="m">11</span>:29
+Completed NSE at <span class="m">11</span>:29, <span class="m">0</span>.00s elapsed
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in <span class="m">21</span>.33 seconds
+           Raw packets sent: <span class="m">2030</span> <span class="o">(</span><span class="m">91</span>.680KB<span class="o">)</span> <span class="p">|</span> Rcvd: <span class="m">16</span> <span class="o">(</span>764B<span class="o">)</span>
+</pre></div>
+
+
+<p>Okay, typically these VMs start off with a web app that contains a few vulnerabilities, however this time it's just SSH and a squid proxy. Given SSH is authenticated, squid proxy it is. After doing some research I figured out that you can use squid proxy to perform a pivot scan against localhost using this proxy to identify ports that were not initially accessible on the remote server. Idea comes from <a href="https://www.rapid7.com/db/modules/auxiliary/scanner/http/squid_pivot_scanning">here</a>.  Hopefully now we will be able to identify a web server. </p>
+<p>First we need to configure Firefox to use the proxy. I'm sure most people are aware of this but <a href="https://getfoxyproxy.org/">FoxyProxy</a> is an outstanding add-on for quickly adding/switching between proxies. After that's set up we visit localhost via the browser and voilá we have a web app. </p>
+<p><img alt="proxy_webaccess.png" src="/images/proxy_webaccess.png"></p>
+<p>Examing the source doesn't give much, so lets do a directory brute force using dirb with the proxy option. </p>
+<div class="highlight"><pre><span></span>root@kali:~/Desktop/sickos# dirb http://localhost -p <span class="m">192</span>.168.61.177:3128
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Fri Aug <span class="m">12</span> <span class="m">11</span>:45:54 <span class="m">2016</span>
+URL_BASE: http://localhost/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+PROXY: <span class="m">192</span>.168.61.177:3128
+
+-----------------
+
+GENERATED WORDS: <span class="m">4612</span>                                                          
+
+---- Scanning URL: http://localhost/ ----
++ http://localhost/cgi-bin/ <span class="o">(</span>CODE:403<span class="p">|</span>SIZE:285<span class="o">)</span>                                                         
++ http://localhost/connect <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:109<span class="o">)</span>                                                          
++ http://localhost/index <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:21<span class="o">)</span>                                                             
++ http://localhost/index.php <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:21<span class="o">)</span>                                                         
++ http://localhost/robots <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:45<span class="o">)</span>                                                            
++ http://localhost/robots.txt <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:45<span class="o">)</span>                                                        
++ http://localhost/server-status <span class="o">(</span>CODE:200<span class="p">|</span>SIZE:3906<span class="o">)</span>                                                   
+
+-----------------
+END_TIME: Fri Aug <span class="m">12</span> <span class="m">11</span>:45:58 <span class="m">2016</span>
+DOWNLOADED: <span class="m">4612</span> - FOUND: <span class="m">7</span>
+root@kali:~/Desktop/sickos# 
+</pre></div>
+
+
+<p>Looking at robots.txt we see that the /wolfcms path is disallowed. Lets examine further. </p>
+<p><img alt="wolfcms.png" src="/images/wolfcms.png"></p>
+<p>Awesome we have more to work with. Given the nature of this engagement and a bit of a gut feeling, there is most likely a public exploit for this CMS. Sure enough, there <a href="https://www.exploit-db.com/exploits/38000/">is</a> :) Basically its a arbitrary file upload vulnerability that allows you to upload any php file, no restrictions. </p>
+<p>To get to the vulnerable file upload page we need to get admin access, the site was still configured with the default creds of admin:admin so all is well. </p>
+<p><img alt="wolfcms_admin.png" src="/images/wolfcms_admin.png"></p>
+<p>Apart from the capability to upload a file, we can also craft our own PHP file inside of the application itself.</p>
+<p><img alt="https://cdn.meme.am/instances/500x/56158060.jpg" src="https://cdn.meme.am/instances/500x/56158060.jpg"></p>
+<p>Just to switch things up I figured I'd use the b347k shell instead of the standard php webshells you find on the internet (although this one is from the internet as well)....stealth is not the name of the game here.</p>
+<p><img alt="wolfcms_backdoor_creation.png" src="/images/wolfcms_backdoor_creation.png"></p>
+<p>Now we have our backdoor at /hello.php, giving us access as user www-data. While this is nice and all, I need a full shell to start escalating privileges. Lets set up nc to listen...</p>
+<p><img alt="nc_rs_catch.png" src="/images/nc_rs_catch.png"></p>
+<p>and reverse shell out...</p>
+<p><img alt="b374_reverse_shell_php.png" src="/images/b374_reverse_shell_php.png"></p>
+<p>While I'm performing my privilege escalation tricks (fantatic <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">guide</a> by @g0tm1lk), I forgot that shells provided by nc suck cause you can't make a typo. So I need a better shell, hey I can be picky in this case :) Anyway, wolfcms has a mysql backend and investigating /var/www/wolfcms/config.php gives the credentials to the database. </p>
+<p><img alt="config_php.png" src="/images/config_php.png"></p>
+<p>Investigating /etc/passwd indicates the only "normal" user is 'sickos'. I'm willing to bet that the same credentials for mysql are the also for this user. Lets see if we can ssh in. </p>
+<div class="highlight"><pre><span></span>root@kali:~/Desktop/sickos# ssh -l sickos <span class="m">192</span>.168.61.177
+sickos@192.168.61.177<span class="s1">&#39;s password: </span>
+<span class="s1">Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.11.0-15-generic i686)</span>
+
+<span class="s1"> * Documentation:  https://help.ubuntu.com/</span>
+
+<span class="s1">  System information as of Fri Aug 12 22:53:00 IST 2016</span>
+
+<span class="s1">  System load:  0.0               Processes:           121</span>
+<span class="s1">  Usage of /:   4.3% of 28.42GB   Users logged in:     0</span>
+<span class="s1">  Memory usage: 12%               IP address for eth0: 192.168.61.177</span>
+<span class="s1">  Swap usage:   0%</span>
+
+<span class="s1">  Graph this data and manage this system at:</span>
+<span class="s1">    https://landscape.canonical.com/</span>
+
+<span class="s1">124 packages can be updated.</span>
+<span class="s1">92 updates are security updates.</span>
+
+<span class="s1">New release &#39;</span><span class="m">14</span>.04.3 LTS<span class="s1">&#39; available.</span>
+<span class="s1">Run &#39;</span><span class="k">do</span>-release-upgrade<span class="err">&#39;</span> to upgrade to it.
+
+Last login: Fri Aug <span class="m">12</span> <span class="m">22</span>:46:51 <span class="m">2016</span> from <span class="m">192</span>.168.61.176
+sickos@SickOs:~$
+</pre></div>
+
+
+<p>So what's cool here is the sickos user is a member of the sudoers group. It's one of the first things I try and it has worked on multiple engagements. This saves alot of time as you can drop into root as long as you known the current user's credentials. Let's grab the flag and we are out of here. </p>
+<div class="highlight"><pre><span></span>sickos@SickOs:~$ sudo su -
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sickos: 
+Sorry, try again.
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> sickos: 
+root@SickOs:~# ls
+a0216ea4d51874464078c618298b1367.txt
+root@SickOs:~# cat a0216ea4d51874464078c618298b1367.txt 
+If you are viewing this!!
+
+ROOT!
+
+You have Succesfully completed SickOS1.1.
+Thanks <span class="k">for</span> Trying
+
+
+root@SickOs:~# 
+</pre></div>
+
+
+<p>When I get some time I think I'll move onto SickOS 1.2. I'll be publish more posts soon, with content other than vulnhub walkthrougt!</p>
+<p>Thanks for reading and happy hacking!</p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=SickOS Vulnhub Walkthrough&amp;url=http://localhost:8000/sickos-vulnhub-walkthrough.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:8000/sickos-vulnhub-walkthrough.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=http://localhost:8000/sickos-vulnhub-walkthrough.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="http://localhost:8000/theme/js/script.js"></script>
+  
+</body>
+</html>
