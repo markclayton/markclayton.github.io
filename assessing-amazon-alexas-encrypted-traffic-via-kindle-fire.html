@@ -139,7 +139,7 @@
 <p>Using the Kindle Fire tablet, you can setup the device to <a href="https://support.portswigger.net/customer/portal/articles/1841101-configuring-an-android-device-to-work-with-burp">proxy</a> app traffic through Burp. Alexa is now just another app on the device. When Alexa is triggered or performs any action I get the traffic through Burp, bypassing the need to deal with secure communications or get the Echo device to play nice with my CA. Alexa and Burp are now friends :) </p>
 <p>To showcase a bit of this I wanted to show an "exchange?" that takes place when asking Alexa something like "<em>what is the weather?</em>". </p>
 <p><img alt="echo traffic through burp" src="/images/burp.png"></p>
-<p>One really interesting thing about this is the call to <code>https://tinytts.amazon.com/</code>. If you follow that link, it contains the Alexa response in .mp3 format. However, it looks like those files exist for awhile, if not days. This makes me wonder if the responses are stored forever, and if it is possible to capture responses from other users. </p>
+<p>One really interesting thing about this is the call to <code>https://tinytts.amazon.com/</code>. If you follow that link, it contains the Alexa response in .mp3 format. However, it looks like those files exist for awhile, if not days. This makes me wonder if the responses are stored forever, and if it is possible to capture responses from other users.</p>
 <p>Anyway, that's all I have right now. I figure somebody would find this useful and it'll help them in researching this device. </p>
             </section>
 

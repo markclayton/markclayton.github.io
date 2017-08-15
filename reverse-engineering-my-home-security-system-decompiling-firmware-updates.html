@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+
+  <title>Reverse Engineering My Home Security System: Decompiling Firmware Updates</title>
+
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="origin" />
+  <meta name="generator" content="Pelican" />
+  <link href="https://markclayton.github.io" rel="canonical" />
+  <!-- <link rel="shortcut icon" href="static/images/favicon.ico" /> -->
+
+  <!-- Feed -->
+      <link href="https://markclayton.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="_bullz3ye Full Atom Feed" />
+
+  <link href="https://markclayton.github.io/theme/css/style.css" type="text/css" rel="stylesheet" />
+
+  <!-- Code highlight color scheme -->
+      <link href="https://markclayton.github.io/theme/css/code_blocks/github.css" rel="stylesheet">
+
+
+  <!-- Custom fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,300' rel='stylesheet' type='text/css' />
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+
+    <link href="https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html" rel="canonical" />
+
+        <meta name="description" content="A few weeks ago I got a home security system installed in my home. The package included a 7-inch tablet called the Honeywell Tuxedo that...">
+
+        <meta name="author" content="Mark Clayton">
+
+        <meta name="tags" content="research">
+        <meta name="tags" content="hacking">
+
+        <meta property="og:locale" content="" />
+    <meta property="og:site_name" content="_bullz3ye" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="_bullz3ye" />
+    <meta property="og:description" content="...still thinking of a genius subtitle, but I break things." />
+    <meta property="og:url" content="https://markclayton.github.io" />
+      <meta name="og:image" content="https://markclayton.github.io/theme/images/post-bg.jpg">
+
+  <meta property="og:type" content="article">
+            <meta property="article:author" content="https://markclayton.github.io/author/mark-clayton.html">
+  <meta property="og:url" content="https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html">
+  <meta property="og:title" content="Reverse Engineering My Home Security System: Decompiling Firmware Updates">
+  <meta property="article:published_time" content="2017-08-15 08:31:00-05:00">
+            <meta property="og:description" content="A few weeks ago I got a home security system installed in my home. The package included a 7-inch tablet called the Honeywell Tuxedo that...">
+
+            <meta property="og:image" content="https://markclayton.github.io/theme/images/post-bg.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@_bullz3ye">
+        <meta name="twitter:title" content="Reverse Engineering My Home Security System: Decompiling Firmware Updates">
+        <meta name="twitter:url" content="https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html">
+
+            <meta name="twitter:image:src" content="https://markclayton.github.io/theme/images/post-bg.jpg">
+
+            <meta name="twitter:description" content="A few weeks ago I got a home security system installed in my home. The package included a 7-inch tablet called the Honeywell Tuxedo that...">
+</head>
+<!-- TODO : Body class -->
+<body class="home-template">
+
+<nav id="menu">
+  <a class="close-button">Close</a>
+  <div class="nav-wrapper">
+    <p class="nav-label">Menu</p>
+    <ul>
+          <li><a href="/" role="presentation">Home</a></li>
+          <li><a href="https://twitter.com/_bullz3ye" role="presentation">Twitter</a></li>
+          <li><a href="mailto:markclayton93@gmail.com" role="presentation">Email</a></li>
+          <li><a href="https://github.com/markclayton" role="presentation">Github</a></li>
+
+
+        <li class="nav-rss"><a href="https://markclayton.github.io/feeds/all.atom.xml"><i class="ic ic-rss"></i> Subscribe</a></li>
+
+    </ul>
+  </div>
+</nav>
+    <!-- Progressbar -->
+    <div class="progress-container">
+        <span class="progress-bar"></span>
+    </div>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header id="post-header" class="has-cover">
+      <div class="inner">
+        <nav id="navigation">
+            <span class="blog-logo">
+                <a href="https://markclayton.github.io"><img src="images/site-logo.png" alt="Blog Logo" /></a>
+            </span>
+          <span id="menu-button" class="nav-button">
+            <a class="menu-button"><i class="ic ic-menu"></i> Menu</a>
+          </span>
+        </nav>
+        <h1 class="post-title">Reverse Engineering My Home Security System: Decompiling Firmware Updates</h1>
+        <!-- TODO : Proper class for headline -->
+        <span class="post-meta">
+                <a href="https://markclayton.github.io/author/mark-clayton.html">Mark clayton</a>
+            | <time datetime="Tue 15 August 2017">Tue 15 August 2017</time>
+        </span>
+        <!-- TODO : Modified check -->
+        
+            <div class="post-cover cover" style="background-color: black">
+        
+      </div>
+    </header>    
+
+  <section id="wrapper">
+    <a class="hidden-close"></a>
+
+    <!-- Post content -->
+    <main class="content" role="main">
+        <article class="post">
+        <div class="inner">
+            <section class="post-content">
+                <p>A few weeks ago I got a home security system installed in my home. The package included a 7-inch tablet called the Honeywell Tuxedo that mounts on the wall. It’s basically a primary controller for the security system. Given what’s been going on in the IoT space and just my pure curiosity, it didn’t take long before the poking and prodding began. My first approach was to treat it like a standard penetration test, identifying network services, lighting testing the web application and enumerating the attack surface. After the first two days of testing in my spare time, the thought occurred that it would suck to ruin the device by testing it too heavily. Nothing like breaking your system and telling support it’s because you fuzzed it to death.</p>
+<p>Instead of investigating from the outside in, I decided to take a different approach and start looking at reverse engineering the firmware. However, as a penetration tester I’m completely out of my comfort zone; but there’s a first time for everything so bear with me. </p>
+<p>Reading through the documentation of the Tuxedo there is a capability to install software updates via SD card. I also found where you can download the latest software update for the device. I couldn’t find any available source code on the web so perhaps this avenue is a good first step. At the time of this writing the latest software update is v5.3.9.0. </p>
+<p><img alt="firmware download" src="/images/web_showing_hdr.png"></p>
+<p>The software downloads as a ZIP, and when extracted reveals an executable. Extracting the .exe shows the HDR files mentioned on the website, but what is an HDR file? I was expecting something like a .bin, and running file just shows they are data files. Not a lot of help.  </p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ unrar x TUXW_V5.3.9.0_CN.exe
+
+UNRAR <span class="m">5</span>.30 beta <span class="m">2</span> freeware      Copyright <span class="o">(</span>c<span class="o">)</span> <span class="m">1993</span>-2015 Alexander Roshal
+
+
+Extracting from TUXW_V5.3.9.0_CN.exe
+
+Extracting  ProgCV.hdr                                                OK 
+Extracting  seconboot.hdr                                             OK 
+Extracting  app1.hdr                                                  OK 
+Extracting  app2.hdr                                                  OK 
+Extracting  app3.hdr                                                  OK 
+Extracting  MCU.hex                                                   OK 
+All OK
+bullz3ye@ubuntu:~/honeywell$ ls
+app1.hdr  app2.hdr  app3.hdr  honeywell.log  MCU.hex  ProgCV.hdr  seconboot.hdr  TUXW_V5.3.9.0_CN.exe  TUXW_V5.3.9.0_CN.zip
+bullz3ye@ubuntu:~/honeywell$ file *.hdr
+app1.hdr:      data
+app2.hdr:      data
+app3.hdr:      data
+ProgCV.hdr:    data
+seconboot.hdr: data
+</pre></div>
+
+
+<p>I spend entirely too much time googling what an HDR file is and how to decompress/extract/open it. Apparently an HDR is a high-dynamic-range image used for photography or something. I’m thinking, maybe Honeywell has some proprietary packaging tool that uses actual images for software updates?</p>
+<p><img alt="funny-meme1" src="/images/wizardry_meme.jpeg"></p>
+<p>What really reinforced this thought pattern was when using <code>strings</code> I get tons of references to a Linux environment. </p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ strings *.hdr <span class="p">|</span> grep Linux
+Linux-2.6.31-207-g7286c01
+Uncompressing Linux...
+        Welcome to Freescale Semiconductor Embedded Linux Environment
+No Linux %s Ramdisk Image
+Linux
+bullz3ye@ubuntu:~/honeywell$ strings *.hdr <span class="p">|</span> grep bash
+bash
+bash
+Ubashbug
+bashbug
+dabash
+.bash_history
+.bash_history
+getopt-parse.bash
+<span class="p">&amp;</span>getopt-test.bash
+getopt-parse.bash
+getopt-test.bash
+bullz3ye@ubuntu:~/honeywell$ strings *.hdr <span class="p">|</span> grep passwd
+passwd
+passwd
+bullz3ye@ubuntu:~/honeywell$ strings *.hdr <span class="p">|</span> grep Freescale
+Freescale Semiconductor, Inc.
+        Welcome to Freescale Semiconductor Embedded Linux Environment
+CPU:   Freescale i.MX35 at1 %d MHz
+</pre></div>
+
+
+<p>How did an embedded linux environment get packaged/compiled into a literal image file? I was getting somewhere though using strings to grep for more keywords. Perhaps there really is a file system in all this. At the very least I know I’m dealing with an embedded linux environment, know the kernel version, and can later read up on Freescale to get an idea of my target and the build process. I continue to use strings in order to try and put the pieces together. </p>
+<p>At the same time, I couldn’t find a single reference point between files with extension HDR and embedded linux or Honeywell. I started looking for any references regarding Honeywell Tuxedo code at all to see if I could get any indication as to what these files are and how they are used. I didn’t find much at all, but finally doing a search for <code>honeywell app2.hdr</code> I run across a repo in <a href="https://github.com/gtvforever/shell">Github</a> that saved the day. </p>
+<p>Two shell scripts exists, yitiaolong.sh and vam_dailybuild.sh, both appear to have something to do with the compilation process. </p>
+<p><img alt="github description" src="/images/compilation_description.png"></p>
+<p>VAM apparently stands for VISTA Automation Module and is related to the Tuxedo. A <a href="https://www.youtube.com/watch?v=_UQRXZoAhxQ">youtube video</a> shows the same interface that is on my Tuxedo device. Long story short these scripts had a wealth of useful information, but I’ll try to highlight some of the key points. </p>
+<p><img alt="yitiaolong.sh" src="/images/ref_to_source_code.png"></p>
+<p>The code above shows project path to the Tuxedo source code and a project called Barracuda (which I’ve yet to dig into). A separate search shows that Barracuda is the web server of choice for the device, and is a separate task all together. Of course the first thing I do it try to access the source code but apparently the acssvn.honeywell.com site no longer exists. There were other past references to the Tuxedo project path online, leading me to think that at one point this repository was publicly available. Either way I can’t access it now. </p>
+<p>Later I come across a <a href="http://www.qaiglobalinstitute.com/wp-content/uploads/2017/04/Adopting-agile-methodologies-and-best-practices.pdf">slideshow </a> with a reference to the subdomain above and it reads:</p>
+<p><img alt="slideshow" src="/images/slideshow.png"></p>
+<p>Here is what we have: acssvn.honeywell.com is their internal link to their version control system, which must mean that the github scripts are intended for internal usage. Are these the scripts used to compile their internal software updates? If so, why is it publicly available? It doesn’t seem to come from a formal Honeywell github repo, just a normal user…perhaps an employee? </p>
+<p><img alt="funny-meme2" src="/images/patrick.png"></p>
+<p>I read through both scripts, and at the end of yitiaolong.sh it shows the files that I’ve extracted from the .exe being copied to an ftp. </p>
+<p><img alt="update-references" src="/images/update_references.png"></p>
+<p>Okay so these scripts definitely have something to do with the software updates. Going up a bit in the code I see this the following:</p>
+<p><img alt="jffs2 reference" src="/images/jffs2_reference.png"></p>
+<p>It looks like the source code is pushed into a root JFFS2 file system (perhaps that Freescale embedded environment), and the file system is generated into a binary. We now know that app2.jffs2 exists somewhere within the app2.hdr file, which is a JFFS2 file system compiled with Freescale tool ‘sumtool’. However, there is a bit of a grey area between how app2.jffs2 turns into app2.hdr and where the rest of the files come from. Lines 55 through 59 shows a python script named header.py that appends a string somewhere in app.jffs2? Let’s take a look at the actual app2.hdr.</p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ head -10 app2.hdr 
+appl000�����w�Fri Oct <span class="m">07</span> <span class="m">13</span>:09:51 2016app2.jffs2TUXW_V5.3.9.0APPTUXEDOPLUSVA��2�v7P6R�W
+���i<span class="err">&#39;</span>�Drop_Cache�����d5�����6R�W6R�W6R�W����w^x^�UMlU�u����ր�O<span class="o">[</span>E<span class="o">{((</span>����B<span class="o">(</span>���<span class="o">(</span>EQ���ec/�
+<span class="o">{</span>��nR<span class="o">[</span>BJJT����P�!H�
+                        R�������!�J���<span class="p">|</span>�?��6�&lt;3o�ͼ�yo2���
+</pre></div>
+
+
+<p>Objdump wasn’t recognizing the file format so I just used head and less to see if that header does exists. At least we can draw the conclusion that some form of header is being prepended to the data file using header.py, is responsible for changing the extension. Still the question remains, is HDR some custom file type?</p>
+<p>I decide to step away for a bit since I don’t have access to header.py, and that extension is really sending me for a loop. About an hour later it occurs to me that what if the .hdr extension stands for ‘header’ and wasn’t the name of any valid file type?! What if it’s just a JFFS2 file system renamed to indicate that a header has been included for the sake of installation?</p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ binwalk app2.hdr
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+<span class="m">128</span>           0x80            JFFS2 filesystem, little endian
+</pre></div>
+
+
+<p>What the f###…I should have done that to begin with.</p>
+<p><img alt="funny-meme3" src="/images/star-trek.png"></p>
+<p>Well, at least we know what we are dealing with here. JFFS2 is a popular file system, and we can use dd to extract it out. </p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ dd <span class="nv">bs</span><span class="o">=</span><span class="m">1</span> <span class="nv">skip</span><span class="o">=</span><span class="m">128</span> <span class="k">if</span><span class="o">=</span>app2.hdr <span class="nv">of</span><span class="o">=</span>app2.jffs2
+<span class="m">130211540</span>+0 records in
+<span class="m">130211540</span>+0 records out
+<span class="m">130211540</span> bytes <span class="o">(</span><span class="m">130</span> MB, <span class="m">124</span> MiB<span class="o">)</span> copied, <span class="m">119</span>.978 s, <span class="m">1</span>.1 MB/s
+bullz3ye@ubuntu:~/honeywell$ file app2.jffs2 
+app2.jffs2: Linux jffs2 filesystem data little endian
+</pre></div>
+
+
+<p>Now that we’ve got the file system, let’s mount it. You can’t mount it like a standard loopback device, but have to create a fake flash device first. </p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:~/honeywell$ sudo modprobe mtdram <span class="nv">total_size</span><span class="o">=</span><span class="m">32768</span> <span class="nv">erase_size</span><span class="o">=</span><span class="m">256</span>
+bullz3ye@ubuntu:~/honeywell$ sudo modprobe mtdblock
+bullz3ye@ubuntu:~/honeywell$ sudo mkdir -p /mnt/disk
+bullz3ye@ubuntu:~/honeywell$ sudo dd <span class="k">if</span><span class="o">=</span>app2.jffs2 <span class="nv">of</span><span class="o">=</span>/dev/mtdblock0
+dd: writing to <span class="s1">&#39;/dev/mtdblock0&#39;</span>: No space left on device
+<span class="m">65537</span>+0 records in
+<span class="m">65536</span>+0 records out
+<span class="m">33554432</span> bytes <span class="o">(</span><span class="m">34</span> MB, <span class="m">32</span> MiB<span class="o">)</span> copied, <span class="m">0</span>.211631 s, <span class="m">159</span> MB/s
+bullz3ye@ubuntu:~/honeywell$ sudo mount -t jffs2 /dev/mtdblock0 /mnt/disk
+</pre></div>
+
+
+<p>Let’s mount and cd into /mnt/disk…</p>
+<p><img alt="show_fs" src="/images/see_fs.png"></p>
+<p>Yes! The first thing I go for now is /etc/shadow or some credentials but it turns out that the Linux environment folders are empty.</p>
+<div class="highlight"><pre><span></span>bullz3ye@ubuntu:/mnt/disk$ ls -ldh */
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> bin/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> dev/
+drwxr-xr-x <span class="m">6</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> etc/
+drwxr-xr-x <span class="m">4</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> home/
+drwxr-xr-x <span class="m">5</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> lib/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> mdns/
+drwxr-xr-x <span class="m">8</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> mnt/
+drwxr-xr-x <span class="m">5</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> opt/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> proc/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> root/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> sbin/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> sys/
+drwxrwxrwt <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> tmp/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> usr/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> var/
+drwxr-xr-x <span class="m">2</span> root root <span class="m">0</span> Oct  <span class="m">7</span>  <span class="m">2016</span> vidrec/
+</pre></div>
+
+
+<p>This leaves the executables, which are apparently ELF 32-bit LSB ARM executables. Based on the file names,  these are definitely the executables that facilitate the processes running on the Tuxedo tablet, specifically the files tuxedo, TotalConnect, and SDCardStatus are interesting. tuxedo has to be the core binary, and TotalConnect must be used to interface with the product’s Honeywell Total Connect 2.0 application. Between this and the empty folders, I assume (at least in this case) that the software update doesn’t replace the entire file system but just the proprietary ELF binaries. </p>
+<p><img alt="show arm binaries" src="/images/arm_binaries.png"></p>
+<p>Taking a step back, I repeat this process of binwalk-ing the hdr files; extracting it’s contents to gather as much info as I can. Through this I discover a ton of useful information for going forward, including certificates, Makefiles, and some CRC32 polynomial tables. The next step is to figure out how to reverse engineer and decompile the binaries, starting with tuxedo for further analysis. That will likely be a part 2 to this post, but I’ve got a lot of work cut out for me. </p>
+<p>Conclusion: </p>
+<p>Starting from a software update, and some critical thinking, I was able to decompile the firmware update for my Honeywell Tuxedo. As a result, I have access to the proprietary binaries, and additional components that make up the device. My next two approaches are: </p>
+<ol>
+<li>Reverse engineer the binaries in an attempt to discovery exploitable vulnerabilities, and learn more about the device. </li>
+<li>Set up a test environment to execute the binaries so I can actively identify the attack surface, fuzz where possible, and really dig into it. </li>
+</ol>
+<p>I hit a few bumps in the road along the way but hey that’s how you learn. Thanks for taking the time to read and definitely feel free to give feedback! Below are some good links that were extremely helpful along the way. </p>
+<p><a href="https://blog.bramp.net/post/2012/01/24/hacking-linksys-e4200v2-firmware/">https://blog.bramp.net/post/2012/01/24/hacking-linksys-e4200v2-firmware/</a>
+<a href="https://wiki.securityweekly.com/Reverse_Engineering_Firmware_Primer">https://wiki.securityweekly.com/Reverse_Engineering_Firmware_Primer</a></p>
+            </section>
+
+            <section class="post-info">
+                <div class="post-share">
+                    <a class="twitter" href="https://twitter.com/share?text=Reverse Engineering My Home Security System: Decompiling Firmware Updates&amp;url=https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <i class="ic ic-twitter"></i><span class="hidden">Twitter</span>
+                    </a>
+                    <a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <i class="ic ic-facebook"></i><span class="hidden">Facebook</span>
+                    </a>
+                    <a class="googleplus" href="https://plus.google.com/share?url=https://markclayton.github.io/reverse-engineering-my-home-security-system-decompiling-firmware-updates.html" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <i class="ic ic-googleplus"></i><span class="hidden">Google+</span>
+                    </a>
+                    <div class="clear"></div>
+                </div>
+
+                <aside class="post-tags">
+<a href="https://markclayton.github.io/tag/research.html">research</a><a href="https://markclayton.github.io/tag/hacking.html">hacking</a>                </aside>
+
+                <div class="clear"></div>
+
+ 
+
+                </section>
+
+
+                <aside class="post-nav">
+                    <div class="clear"></div>
+                </aside>
+
+            </div>
+        </article>
+    </main>
+      <!-- TODO : Body class -->
+    <div id="body-class" style="display: none;" class=""></div>
+  
+    <footer id="footer">
+      <div class="inner">
+        <section class="credits">
+          <span class="credits-theme">Theme <a href="https://github.com/arulrajnet/attila" rel="nofollow">Attila</a></span>
+          <span class="credits-software">Published with <a href="https://github.com/getpelican/pelican" rel="nofollow">Pelican</a></span>
+        </section>
+      </div>
+    </footer>
+  </section>
+
+  <script type="text/javascript" src="https://markclayton.github.io/theme/js/script.js"></script>
+  
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-100526274-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</body>
+</html>
